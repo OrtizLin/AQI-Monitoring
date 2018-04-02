@@ -17,7 +17,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	for i := 0; i < 77; i++ {
+	for i := 0; i < len(generic); i++ {
 		md := generic[i].(map[string]interface{})
 		fmt.Println(md["SiteName"], md["AQI"], md["Status"], md["Latitude"], md["Longitude"])
 	}
