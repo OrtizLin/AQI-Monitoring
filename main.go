@@ -2,14 +2,11 @@ package main
 
 import (
 
-	//GET JSON INSERT DB
-	//"aqiCrawler/db"
-
 	//CALCULATE THE SHORTEST DISTANCE
 	// "aqiCrawler/distance"
 	// "fmt"
 
-	//LINE BOT
+	"aqiCrawler/db"
 	"aqiCrawler/linebot"
 	"fmt"
 	"net/http"
@@ -19,7 +16,7 @@ import (
 func main() {
 
 	//GET JSON INSERT DB
-	// aqidb.GetData()
+	aqidb.GetData()
 
 	//CALCULATE THE SHORTEST DISTANCE
 	// str := distance.GetSite("25.100000", "121.500000")
