@@ -24,6 +24,7 @@ func main() {
 	}
 	http.HandleFunc("/callback", app.Callback)
 	http.HandleFunc("/auth", linenotify.Auth)
+	http.HandleFunc("/pushnotify", linenotify.Token)
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		fmt.Println(err)
 	}
