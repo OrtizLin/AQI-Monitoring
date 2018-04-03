@@ -81,7 +81,7 @@ func (app *LineBotStruct) handleText(message *linebot.TextMessage, replyToken st
 
 }
 
-func (app *KitchenSink) handleLocation(message *linebot.LocationMessage, replyToken string) error {
+func (app *LineBotStruct) handleLocation(message *linebot.LocationMessage, replyToken string) error {
 	str := message.Title + message.Address + message.Latitude + message.Longitude
 	if _, err := app.bot.ReplyMessage(
 		replyToken,
