@@ -1,7 +1,7 @@
 package linebot
 
 import (
-	"github.com/lin/line-bot-sdk-go/linebot"
+	"github.com/line/line-bot-sdk-go/linebot"
 )
 
 type LineBotStruct struct {
