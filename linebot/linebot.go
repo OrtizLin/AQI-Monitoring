@@ -56,18 +56,9 @@ func (app *LineBotStruct) Callback(w http.ResponseWriter, r *http.Request) {
 				log.Printf("Unknown message: %v", message)
 			}
 		case linebot.EventTypeFollow:
-			//GET USER PROFILE
-			profile, err := app.bot.GetProfile(event.Source.UserID).Do()
-			if err != nil {
+			if err := app.handleFollow(event.ReplyToken, event.Source); err != nil {
 				log.Print(err)
 			}
-			if _, err := app.bot.ReplyMessage(
-				event.replyToken,
-				linebot.NewTextMessage(profile.DisplayName+"歡迎使用 空汙報報 。 \n請按以下步驟啟用 LINE Notify\n已獲得最新文章通知。\n1. 開啟下方網址\n2. 選擇“群組”第一個「透過1對1聊天」接收Line Notify的通知\n3.點擊「同意並連動」\nhttps://www.yahoo.com.tw/"+profile.UserID),
-			).Do(); err != nil {
-
-			}
-
 		default:
 			log.Printf("Unknown event: %v", event)
 		}
@@ -109,4 +100,18 @@ func (app *LineBotStruct) handleLocation(message *linebot.LocationMessage, reply
 		return err
 	}
 	return nil
+}
+
+func (app *LineBotStruct) handleFollow(replyToken string, source *linebot.EventSource) error {
+	//GET USER PROFILE
+	profile, err := app.bot.GetProfile(source.UserID).Do()
+	if err != nil {
+		log.Print(err)
+	}
+	if _, err := app.bot.ReplyMessage(
+		replyToken,
+		linebot.NewTextMessage(profile.DisplayName+"歡迎使用 空汙報報 。 \n請按以下步驟啟用 LINE Notify\n已獲得最新文章通知。\n1. 開啟下方網址\n2. 選擇“群組”第一個「透過1對1聊天」接收Line Notify的通知\n3.點擊「同意並連動」\nhttps://www.yahoo.com.tw/"+profile.UserID),
+	).Do(); err != nil {
+
+	}
 }
