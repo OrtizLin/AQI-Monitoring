@@ -2,6 +2,8 @@ package linebot
 
 import (
 	"github.com/line/line-bot-sdk-go/linebot"
+	"log"
+	"net/http"
 )
 
 type LineBotStruct struct {
@@ -11,7 +13,7 @@ type LineBotStruct struct {
 }
 
 func NewLineBot(channelSecret, channelToken, appBaseURL string) (*LineBotStruct, error) {
-	bots, err := linbot.New(
+	bots, err := linebot.New(
 		channelSecret,
 		channelToken,
 	)
