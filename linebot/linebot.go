@@ -46,6 +46,10 @@ func (app *LineBotStruct) Callback(w http.ResponseWriter, r *http.Request) {
 				if err := app.handleText(message, event.ReplyToken, event.Source); err != nil {
 					log.Print(err)
 				}
+			case *linebot.LocationMessage:
+				if err := app.handleLocation(message, event.ReplyToken); err != nil {
+					log.Print(err)
+				}
 			default:
 				log.Printf("Unknown message: %v", message)
 			}
@@ -75,4 +79,15 @@ func (app *LineBotStruct) handleText(message *linebot.TextMessage, replyToken st
 	}
 	return nil
 
+}
+
+func (app *KitchenSink) handleLocation(message *linebot.LocationMessage, replyToken string) error {
+	str := message.Title + message.Address + message.Latitude + message.Longitude
+	if _, err := app.bot.ReplyMessage(
+		replyToken,
+		linebot.NewTextMessage(str),
+	).Do(); err != nil {
+		return err
+	}
+	return nil
 }
