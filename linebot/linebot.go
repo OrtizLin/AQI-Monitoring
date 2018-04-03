@@ -84,7 +84,9 @@ func (app *LineBotStruct) handleText(message *linebot.TextMessage, replyToken st
 
 func (app *LineBotStruct) handleLocation(message *linebot.LocationMessage, replyToken string) error {
 
-	str := message.Title + message.Address + message.Latitude.(string) + message.Longitude.(string)
+	lat := strconv.FormatFloat(message.Latitude, 'f', -1, 64)
+	long := strconv.FormatFloat(message.Longitude, 'f', -1, 64)
+	str := message.Title + message.Address + lat + long
 	if _, err := app.bot.ReplyMessage(
 		replyToken,
 		linebot.NewTextMessage(str),
