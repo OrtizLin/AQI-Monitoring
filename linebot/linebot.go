@@ -49,7 +49,7 @@ func (app *LineBotStruct) Callback(w http.ResponseWriter, r *http.Request) {
 					log.Print(err)
 				}
 			case *linebot.LocationMessage:
-				if err := app.handleLocation(message, event.ReplyToken); err != nil {
+				if err := app.handleLocation(message, event.ReplyToken, event.Source); err != nil {
 					log.Print(err)
 				}
 			default:
@@ -83,15 +83,21 @@ func (app *LineBotStruct) handleText(message *linebot.TextMessage, replyToken st
 
 }
 
-func (app *LineBotStruct) handleLocation(message *linebot.LocationMessage, replyToken string) error {
+func (app *LineBotStruct) handleLocation(message *linebot.LocationMessage, replyToken string, source *linebot.EventSource) error {
 
 	lat := strconv.FormatFloat(message.Latitude, 'f', -1, 64)
 	long := strconv.FormatFloat(message.Longitude, 'f', -1, 64)
 	str := distance.GetSite(lat, long)
 
+	//GET USER PROFILE
+	profile, err := app.bot.GetProfile(source.UserID).Do()
+	if err != nil {
+		log.Print(err)
+	}
+
 	if _, err := app.bot.ReplyMessage(
 		replyToken,
-		linebot.NewTextMessage("離你最近的觀測站為 : "+str),
+		linebot.NewTextMessage("離你最近的觀測站為 : "+str+"\n"+profile.DisplayName+"\n"+profile.PictureURL+"\n"+profile.UserID),
 	).Do(); err != nil {
 		return err
 	}
