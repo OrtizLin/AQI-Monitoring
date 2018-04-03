@@ -1,6 +1,7 @@
 package linebot
 
 import (
+	"aqiCrawler/distance"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
 	"net/http"
@@ -86,10 +87,11 @@ func (app *LineBotStruct) handleLocation(message *linebot.LocationMessage, reply
 
 	lat := strconv.FormatFloat(message.Latitude, 'f', -1, 64)
 	long := strconv.FormatFloat(message.Longitude, 'f', -1, 64)
-	str := message.Title + message.Address + lat + long
+	str := distance.GetSite(lat, long)
+
 	if _, err := app.bot.ReplyMessage(
 		replyToken,
-		linebot.NewTextMessage(str),
+		linebot.NewTextMessage("離你最近的觀測站為 : "+str),
 	).Do(); err != nil {
 		return err
 	}
