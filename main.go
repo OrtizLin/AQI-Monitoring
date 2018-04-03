@@ -1,9 +1,9 @@
 package main
 
 import (
+	"aqiCrawler/distancepackage"
 	"encoding/json"
 	"fmt"
-	"github.com/OrtizLin/AQI-Monitoring/distancepackage"
 	"log"
 	"net/http"
 	"strconv"

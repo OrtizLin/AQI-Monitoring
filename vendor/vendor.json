@@ -1,25 +1,6 @@
 {
 	"comment": "",
 	"ignore": "test",
-	"package": [
-		{
-			"checksumSHA1": "5wUyy04M/tn9CTf3GeStdOHFHpc=",
-			"path": "github.com/OrtizLin/AQI-Monitoring/distancepackage",
-			"revision": "6f455b3e6d3bbf2865e9dfe6203707f204ad5dfb",
-			"revisionTime": "2018-04-03T02:06:45Z"
-		},
-		{
-			"checksumSHA1": "Ydh4bz1JdjeC/yYZVMteAiG31Cg=",
-			"path": "github.com/elgs/gojq",
-			"revision": "81fa9a608a130323eaf4b4fc00224f7a467ffbd1",
-			"revisionTime": "2016-04-21T19:40:50Z"
-		},
-		{
-			"checksumSHA1": "mbG9pNnNbnjutJynijNPZWQzSVw=",
-			"path": "github.com/elgs/gosplitargs",
-			"revision": "a491c5eeb3c841d55913cf4888f5c957be4c598d",
-			"revisionTime": "2016-10-28T07:19:35Z"
-		}
-	],
+	"package": [],
 	"rootPath": "aqiCrawler"
 }
