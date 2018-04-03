@@ -1,11 +1,7 @@
 package main
 
 import (
-
-	//CALCULATE THE SHORTEST DISTANCE
-	// "aqiCrawler/distance"
-	// "fmt"
-
+	"apiCrawler/linenotify"
 	"aqiCrawler/db"
 	"aqiCrawler/linebot"
 	"fmt"
@@ -18,10 +14,6 @@ func main() {
 	//GET JSON INSERT DB
 	db.GetData()
 
-	//CALCULATE THE SHORTEST DISTANCE
-	// str := distance.GetSite("25.100000", "121.500000")
-	// fmt.Println(str)
-
 	app, err := linebot.NewLineBot(
 		os.Getenv("ChannelSecret"),
 		os.Getenv("ChannelAccessToken"),
@@ -31,6 +23,7 @@ func main() {
 		fmt.Println(err)
 	}
 	http.HandleFunc("/callback", app.Callback)
+	http.HandleFunc("/auth", linenotify.Auth)
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		fmt.Println(err)
 	}
