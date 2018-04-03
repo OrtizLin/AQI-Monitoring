@@ -1,9 +1,9 @@
 package main
 
 import (
-	// "apiCrawler/linenotify"
 	"aqiCrawler/db"
 	"aqiCrawler/linebot"
+	"aqiCrawler/linenotify"
 	"fmt"
 	"net/http"
 	"os"
@@ -23,7 +23,7 @@ func main() {
 		fmt.Println(err)
 	}
 	http.HandleFunc("/callback", app.Callback)
-	// http.HandleFunc("/auth", linenotify.Auth)
+	http.HandleFunc("/auth", linenotify.Auth)
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		fmt.Println(err)
 	}
