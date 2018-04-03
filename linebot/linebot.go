@@ -110,7 +110,7 @@ func (app *LineBotStruct) handleFollow(replyToken string, source *linebot.EventS
 	}
 	if _, err := app.bot.ReplyMessage(
 		replyToken,
-		linebot.NewTextMessage(profile.DisplayName+" 歡迎使用 空汙報報 。 \n請按步驟啟用 LINE Notify\n已獲得最新文章通知。\n1. 開啟下方網址\n2. 選擇“群組”第一個「透過1對1聊天」接收 Line Notify 的通知。\n3. 點擊「同意並連動」。\nhttps://www.yahoo.com.tw/"+profile.UserID),
+		linebot.NewTextMessage(profile.DisplayName+" 歡迎使用 空汙報報 。\n請按步驟啟用 LINE Notify\n已獲得最新文章通知。\n1. 開啟下方網址\n2. 選擇“群組”第一個「透過1對1聊天」接收 Line Notify 的通知。\n3. 點擊「同意並連動」。\nhttps://www.yahoo.com.tw/"+profile.UserID),
 	).Do(); err != nil {
 		return err
 	}
