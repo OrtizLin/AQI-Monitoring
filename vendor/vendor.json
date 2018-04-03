@@ -3,6 +3,12 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "5wUyy04M/tn9CTf3GeStdOHFHpc=",
+			"path": "github.com/OrtizLin/AQI-Monitoring/distancepackage",
+			"revision": "6f455b3e6d3bbf2865e9dfe6203707f204ad5dfb",
+			"revisionTime": "2018-04-03T02:06:45Z"
+		},
+		{
 			"checksumSHA1": "Ydh4bz1JdjeC/yYZVMteAiG31Cg=",
 			"path": "github.com/elgs/gojq",
 			"revision": "81fa9a608a130323eaf4b4fc00224f7a467ffbd1",
