@@ -3,6 +3,7 @@ package distance
 import (
 	"gopkg.in/mgo.v2"
 	"math"
+	"os"
 	"strconv"
 )
 

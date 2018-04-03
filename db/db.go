@@ -5,6 +5,7 @@ import (
 	"gopkg.in/mgo.v2"
 	"log"
 	"net/http"
+	"os"
 )
 
 type AqiSite struct {

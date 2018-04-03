@@ -11,6 +11,9 @@ import (
 
 	//LINE BOT
 	"aqiCrawler/linebot"
+	"fmt"
+	"net/http"
+	"os"
 )
 
 func main() {
@@ -30,7 +33,6 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	go countUpdater()
 	http.HandleFunc("/callback", app.Callback)
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		fmt.Println(err)
