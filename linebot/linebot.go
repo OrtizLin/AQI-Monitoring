@@ -24,7 +24,7 @@ func NewLineBot(channelSecret, channelToken, appBaseURL string) (*LineBotStruct,
 		bot:         bots,
 		appBaseURL:  appBaseURL,
 		downloadDir: "testing",
-	}
+	}, nil
 }
 
 func (app *LineBotStruct) Callback(w http.ResponseWriter, r *http.Request) {
