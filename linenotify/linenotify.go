@@ -6,5 +6,6 @@ import (
 )
 
 func Auth(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprint(w, "hello world ")
+	param1 := req.URL.Query().Get("param1")
+	fmt.Fprint(w, param1)
 }
