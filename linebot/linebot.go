@@ -4,6 +4,7 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 type LineBotStruct struct {
@@ -82,7 +83,10 @@ func (app *LineBotStruct) handleText(message *linebot.TextMessage, replyToken st
 }
 
 func (app *LineBotStruct) handleLocation(message *linebot.LocationMessage, replyToken string) error {
-	str := message.Title + message.Address + message.Latitude + message.Longitude
+
+	lat := strconv.FormatFloat(message.Latitude, 'E', -1, 64)
+	long := strconv.FormatFloat(message.Longitude, 'E', -1, 64)
+	str := message.Title + message.Address + lat + long
 	if _, err := app.bot.ReplyMessage(
 		replyToken,
 		linebot.NewTextMessage(str),
