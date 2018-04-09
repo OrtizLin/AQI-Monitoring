@@ -17,6 +17,12 @@ type AqiSite struct {
 	UpdateTime string
 }
 
+type User struct {
+	UserClientID string
+	UserToken    string
+	UserLocation []string
+}
+
 func GetData() {
 	//Connect DB
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
@@ -52,4 +58,44 @@ func GetData() {
 			log.Fatal(errs)
 		}
 	}
+}
+
+func SaveToken(token, clientID string) bool {
+	session, errs := mgo.Dial(os.Getenv("DBURL"))
+	if errs != nil {
+		panic(errs)
+	}
+	defer session.Close()
+	collect := session.DB("aqidb").C("userdb")
+	loc := []string{}
+	user := User{}
+	user.UserToken = accessToken
+	user.UserClientID = param1
+	user.UserLocation = loc
+	errs = collect.Insert(&User{user.UserClientID, user.UserToken, user.UserLocation})
+	if errs != nil {
+		return false
+	} else {
+		return true
+	}
+}
+
+func NewSite(site, clientID string) string {
+	result := User{}
+	session, errs := mgo.Dial(os.Getenv("DBURL"))
+	if errs != nil {
+		panic(errs)
+	}
+	defer session.Close()
+	c := session.DB("aqidb").C("userdb")
+	err := c.Find(bson.M{"userclientid": clientID}).One(&result)
+	if err != nil {
+		fmt.println("FOUND!!!")
+		fmt.println(result)
+	} else {
+
+		fmt.println("NOT FOUND!!!")
+		fmt.println(result)
+	}
+	return nil
 }

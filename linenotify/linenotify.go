@@ -1,11 +1,10 @@
 package linenotify
 
 import (
+	"aqiCrawler/db"
 	"fmt"
-	// "github.com/utahta/go-linenotify"
 	"github.com/utahta/go-linenotify/auth"
 	"github.com/utahta/go-linenotify/token"
-	"gopkg.in/mgo.v2"
 	"log"
 	"net/http"
 	"os"
@@ -54,20 +53,9 @@ func Token(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "error:%v", err)
 		return
 	}
-	session, errs := mgo.Dial(os.Getenv("DBURL"))
-	if errs != nil {
-		panic(errs)
+
+	if db.SaveToken(accessToken, param1) {
+		fmt.Fprintf(w, "LINE Notify 連動完成。\n 請返回空汙報報, 並註冊離你最近的觀測站。")
 	}
-	defer session.Close()
-	collect := session.DB("aqidb").C("userdb")
-	loc := []string{}
-	user := User{}
-	user.UserToken = accessToken
-	user.UserClientID = param1
-	user.UserLocation = loc
-	errs = collect.Insert(&User{user.UserClientID, user.UserToken, user.UserLocation})
-	if errs != nil {
-		log.Fatal(errs)
-	}
-	fmt.Fprintf(w, "LINE Notify 連動完成。\n 請返回空汙報報, 並註冊離你最近的觀測站。")
+
 }

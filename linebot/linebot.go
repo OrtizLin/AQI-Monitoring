@@ -1,6 +1,7 @@
 package linebot
 
 import (
+	"aqiCrawler/db"
 	"aqiCrawler/distance"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
@@ -99,6 +100,7 @@ func (app *LineBotStruct) handleLocation(message *linebot.LocationMessage, reply
 	).Do(); err != nil {
 		return err
 	}
+	db.NewSite(str, source.UserID)
 	return nil
 }
 
