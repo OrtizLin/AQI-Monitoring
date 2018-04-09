@@ -72,7 +72,7 @@ func (app *LineBotStruct) handleText(message *linebot.TextMessage, replyToken st
 		str := db.CheckRegistered(source.UserID)
 		if _, err := app.bot.ReplyMessage(
 			replyToken,
-			linebot.NewTextMessage(str),
+			linebot.NewTextMessage("目前加入的觀測站有 : "+str),
 		).Do(); err != nil {
 			return err
 		}
