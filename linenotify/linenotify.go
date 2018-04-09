@@ -16,7 +16,7 @@ func Auth(w http.ResponseWriter, req *http.Request) {
 
 	c, err := auth.New(os.Getenv("ClientID"), os.Getenv("APP_BASE_URL")+"pushnotify?client="+param1)
 	if err != nil {
-		fmt.Fprintf(w, "error:%v", err)
+		fmt.Fprintf(w, "55688")
 		return
 	}
 	http.SetCookie(w, &http.Cookie{Name: "state", Value: c.State, Expires: time.Now().Add(60 * time.Second)})
