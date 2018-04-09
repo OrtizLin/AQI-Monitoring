@@ -90,6 +90,7 @@ func NewSite(site, clientID string) bool {
 	}
 	defer session.Close()
 	c := session.DB("aqidb").C("userdb")
+
 	err := c.Find(bson.M{"userclientid": clientID}).One(&result)
 	if err != nil {
 		fmt.Println("NOT FOUND!!")
@@ -97,7 +98,12 @@ func NewSite(site, clientID string) bool {
 	} else {
 		fmt.Println("FOUND!!!")
 		result.UserLocation = append(result.UserLocation, site)
-		fmt.Println(result.UserLocation)
+		colQuerier := bson.M{"userclientid": clientID}
+		change := bson.M{"$set": bson.M{"userlocation": result.UserLocation}}
+		err = c.Update(colQuerier, change)
+		if err != nil {
+			panic(err)
+		}
 		return true
 	}
 }
