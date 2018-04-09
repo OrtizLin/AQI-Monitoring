@@ -99,5 +99,5 @@ func NewSite(site, clientID string) string {
 		fmt.Println("NOT FOUND!!!")
 		fmt.Println(result)
 	}
-	return nil
+	return ""
 }
