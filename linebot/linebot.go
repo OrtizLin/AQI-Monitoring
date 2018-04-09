@@ -95,7 +95,7 @@ func (app *LineBotStruct) handleLocation(message *linebot.LocationMessage, reply
 
 	if _, err := app.bot.ReplyMessage(
 		replyToken,
-		linebot.NewTextMessage("離你最近的觀測站為 : "+str。+"你的client id 為 : "+source.UserID),
+		linebot.NewTextMessage("離你最近的觀測站為 : "+str+"你的client id 為 : "+source.UserID),
 	).Do(); err != nil {
 		return err
 	}
