@@ -10,9 +10,11 @@ import (
 	"time"
 )
 
+const param1 string = ""
+
 func Auth(w http.ResponseWriter, req *http.Request) {
-	param1 := req.URL.Query().Get("client")
-	c, err := auth.New(os.Getenv("ClientID"), os.Getenv("APP_BASE_URL")+"pushnotify?ooo="+param1)
+	param1 = req.URL.Query().Get("client")
+	c, err := auth.New(os.Getenv("ClientID"), os.Getenv("APP_BASE_URL")+"pushnotify")
 	if err != nil {
 		fmt.Fprintf(w, "error:%v", err)
 		return
@@ -22,7 +24,6 @@ func Auth(w http.ResponseWriter, req *http.Request) {
 }
 
 func Token(w http.ResponseWriter, req *http.Request) {
-	param1 := req.URL.Query().Get("ooo")
 	resp, err := auth.ParseRequest(req)
 	if err != nil {
 		fmt.Fprintf(w, "error:%v", err)
