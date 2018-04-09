@@ -96,7 +96,8 @@ func NewSite(site, clientID string) bool {
 		return false
 	} else {
 		fmt.Println("FOUND!!!")
-		fmt.Println(result)
+		result.UserLocation = append(result.UserLocation, site)
+		fmt.Println(result.UserLocation)
 		return true
 	}
 }
