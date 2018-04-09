@@ -10,6 +10,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -70,9 +71,17 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 			for iter.Next(&result) {
 				if contains(result.UserLocation, aqisite.StieName) {
 					connect := linenotify.New()
-
+					myrand := random(1, 251)
+					url := ""
+					if myrand < 10 {
+						url = "https://www.dragonflycave.com/sprites/gen2/g/00" + strconv.Itoa(myrand) + ".png"
+					} else if myrand >= 10 && myrand < 100 {
+						url = "https://www.dragonflycave.com/sprites/gen2/g/0" + strconv.Itoa(myrand) + ".png"
+					} else {
+						url = "https://www.dragonflycave.com/sprites/gen2/g/" + strconv.Itoa(myrand) + ".png"
+					}
 					str := "今天 " + aqisite.StieName + " 附近空氣良好, 把握機會出去走走吧！"
-					connect.NotifyWithImageURL(result.UserToken, str, "https://www.dragonflycave.com/sprites/gen2/g/095.png", "https://www.dragonflycave.com/sprites/gen2/g/095.png")
+					connect.NotifyWithImageURL(result.UserToken, str, url, url)
 				}
 			}
 		}
