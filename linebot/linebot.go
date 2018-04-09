@@ -100,6 +100,13 @@ func (app *LineBotStruct) handleLocation(message *linebot.LocationMessage, reply
 		).Do(); err != nil {
 			return err
 		}
+	} else {
+		if _, err := app.bot.ReplyMessage(
+			replyToken,
+			linebot.NewTextMessage("觀測站加入失敗，請先點擊下列網址與 Line Notify 連動\nhttps://aqi-push-notify.herokuapp.com/auth?client="+source.UserID),
+		).Do(); err != nil {
+			return err
+		}
 	}
 	return nil
 }
