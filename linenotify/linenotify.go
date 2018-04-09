@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-const param1 string = ""
+var param1 = ""
 
 func Auth(w http.ResponseWriter, req *http.Request) {
 	param1 = req.URL.Query().Get("client")
