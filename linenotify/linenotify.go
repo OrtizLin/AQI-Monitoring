@@ -60,7 +60,7 @@ func Token(w http.ResponseWriter, req *http.Request) {
 	}
 	defer session.Close()
 	collect := session.DB("aqidb").C("userdb")
-	loc := []string{}
+	loc := []string{"123", "456", "000"}
 	user := User{}
 	user.UserToken = accessToken
 	user.UserClientID = param1
