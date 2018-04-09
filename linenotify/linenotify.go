@@ -2,13 +2,19 @@ package linenotify
 
 import (
 	"fmt"
-	//"github.com/utahta/go-linenotify"
+	"github.com/utahta/go-linenotify"
 	"github.com/utahta/go-linenotify/auth"
 	"github.com/utahta/go-linenotify/token"
 	"net/http"
 	"os"
 	"time"
 )
+
+type User struct {
+	UserClientID string
+	UserToken    string
+	UserLocation string
+}
 
 var param1 = ""
 
@@ -46,5 +52,24 @@ func Token(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "error:%v", err)
 		return
 	}
-	fmt.Println(accessToken, "client id is :", param1)
+	session, errs := mgo.Dial(os.Getenv("DBURL"))
+	if errs != nil {
+		panic(errs)
+	}
+	defer session.Close()
+	collect := session.DB("aqidb").C("userdb")
+	user := User{}
+	user.UserToken = accessToken
+	user.UserClientID = param1
+	user.UserLocation = ""
+	errs = collect.Insert(&User{user.UserClientID, user.UserToken, user.UserLocation})
+	if errs != nil {
+		log.Fatal(errs)
+	} else {
+		str := "恭喜您已與空汙報報連動,ClientID :" + user.UserClientID + ", Token :" + user.UserToken
+		connect := linenotify.New()
+		connect.NotifyWithImageURL(user.UserToken, str, "https://image.famitsu.hk/201712/47dec32c774c3fd60deb142192fcee93_m.jpg", "https://image.famitsu.hk/201712/47dec32c774c3fd60deb142192fcee93_m.jpg")
+	}
+
+	fmt.Fprintf(w, "LINE Notify 連動完成。\n 您將可以不定期收到 [PTT 表特版] 爆文通知。")
 }
