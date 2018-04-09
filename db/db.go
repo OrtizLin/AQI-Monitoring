@@ -1,6 +1,7 @@
 package db
 
 import (
+	"aqiCrawler/linenotify"
 	"encoding/json"
 	"fmt"
 	"gopkg.in/mgo.v2"
@@ -33,6 +34,7 @@ func GetData() {
 	}
 	defer session.Close()
 	c := session.DB("aqidb").C("aqisite")
+	c2 := session.DB("aqidb").C("userdb")
 	//Clean DB
 	c.RemoveAll(nil)
 	//Get AQI data from opendate2
@@ -58,6 +60,16 @@ func GetData() {
 		errs = c.Insert(&AqiSite{aqisite.StieName, aqisite.AQI, aqisite.Status, aqisite.Latitude, aqisite.Longitude, aqisite.UpdateTime})
 		if errs != nil {
 			log.Fatal(errs)
+		}
+		//Check status and send notify to whom live in this area.
+		if aqisite.Status == "良好" {
+			result := User{}
+			iter := c2.Find(nil).Iter()
+			for iter.Next(&result) {
+				if contains(result.UserLocation, aqisite.StieName) {
+					linenotify.SendGoodNews(result.UserToken, aqisite.StieName)
+				}
+			}
 		}
 	}
 }

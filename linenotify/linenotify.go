@@ -3,6 +3,7 @@ package linenotify
 import (
 	"aqiCrawler/db"
 	"fmt"
+	"github.com/utahta/go-linenotify"
 	"github.com/utahta/go-linenotify/auth"
 	"github.com/utahta/go-linenotify/token"
 	"net/http"
@@ -57,4 +58,10 @@ func Token(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "LINE Notify 連動完成。\n 請返回空汙報報, 並註冊離你最近的觀測站。")
 	}
 
+}
+
+func SendGoodNews(Token, SiteName string) {
+	connect := linenotify.New()
+	str := "今天 " + SiteName + " 附近空氣良好, 把握機會出去走走吧！"
+	connect.NotifyWithImageURL(Token, str, "https://image.famitsu.hk/201712/47dec32c774c3fd60deb142192fcee93_m.jpg", "https://image.famitsu.hk/201712/47dec32c774c3fd60deb142192fcee93_m.jpg")
 }
