@@ -2,7 +2,7 @@ package linenotify
 
 import (
 	"fmt"
-	"github.com/utahta/go-linenotify"
+	// "github.com/utahta/go-linenotify"
 	"github.com/utahta/go-linenotify/auth"
 	"github.com/utahta/go-linenotify/token"
 	"gopkg.in/mgo.v2"
@@ -68,5 +68,5 @@ func Token(w http.ResponseWriter, req *http.Request) {
 	if errs != nil {
 		log.Fatal(errs)
 	}
-	fmt.Fprintf(w, "LINE Notify 連動完成。\n 請返回空汙報報,並註冊離你最近的觀測站。")
+	fmt.Fprintf(w, "LINE Notify 連動完成。\n 請返回空汙報報,並註冊離你最近的觀測站")
 }
