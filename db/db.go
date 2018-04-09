@@ -92,12 +92,12 @@ func NewSite(site, clientID string) string {
 	c := session.DB("aqidb").C("userdb")
 	err := c.Find(bson.M{"userclientid": clientID}).One(&result)
 	if err != nil {
-		fmt.println("FOUND!!!")
-		fmt.println(result)
+		fmt.Println("FOUND!!!")
+		fmt.Println(result)
 	} else {
 
-		fmt.println("NOT FOUND!!!")
-		fmt.println(result)
+		fmt.Println("NOT FOUND!!!")
+		fmt.Println(result)
 	}
 	return nil
 }
