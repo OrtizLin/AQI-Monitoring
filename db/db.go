@@ -26,7 +26,7 @@ type User struct {
 	UserLocation []string
 }
 
-func GetData() {
+func GetData(w http.ResponseWriter, req *http.Request) {
 	//Connect DB
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
 	if errs != nil {
