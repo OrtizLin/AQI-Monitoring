@@ -68,10 +68,11 @@ func (app *LineBotStruct) Callback(w http.ResponseWriter, r *http.Request) {
 
 func (app *LineBotStruct) handleText(message *linebot.TextMessage, replyToken string, source *linebot.EventSource) error {
 	switch message.Text {
-	case "tonygrr":
+	case "查詢":
+		str = db.CheckRegistered(source.UserID)
 		if _, err := app.bot.ReplyMessage(
 			replyToken,
-			linebot.NewTextMessage("嫩！"),
+			linebot.NewTextMessage(str),
 		).Do(); err != nil {
 			return err
 		}

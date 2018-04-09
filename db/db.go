@@ -85,7 +85,7 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 						} else {
 							url = "https://www.dragonflycave.com/sprites/gen2/g/" + strconv.Itoa(myrand) + ".png"
 						}
-						str := "今天 " + aqisite.StieName + " 附近空氣良好, 把握機會出去走走吧！"
+						str := "今天 [" + aqisite.StieName + "] 附近空氣良好, 把握機會出去走走吧！"
 						connect.NotifyWithImageURL(result.UserToken, str, url, url)
 					}
 				}
@@ -141,6 +141,26 @@ func NewSite(site, clientID string) bool {
 			}
 			return true
 		}
+	}
+}
+
+func CheckRegistered(clientID string) string {
+	result := User{}
+	session, errs := mgo.Dial(os.Getenv("DBURL"))
+	if errs != nil {
+		panic(errs)
+	}
+	defer session.Close()
+	c := session.DB("aqidb").C("userdb")
+	err := c.Find(bson.M{"userclientid": clientID}).One(&result)
+	if err != nil {
+		return "NoUser"
+	} else {
+		str := ""
+		for i := 0; i < result.UserLocation.len; i++ {
+			str = append(str, result.UserLocation[i])
+		}
+		return str
 	}
 }
 
