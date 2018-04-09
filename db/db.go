@@ -7,8 +7,10 @@ import (
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
+	"time"
 )
 
 type AqiSite struct {
@@ -68,8 +70,9 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 			for iter.Next(&result) {
 				if contains(result.UserLocation, aqisite.StieName) {
 					connect := linenotify.New()
+
 					str := "今天 " + aqisite.StieName + " 附近空氣良好, 把握機會出去走走吧！"
-					connect.NotifyWithImageURL(result.UserToken, str, "https://image.famitsu.hk/201712/47dec32c774c3fd60deb142192fcee93_m.jpg", "https://image.famitsu.hk/201712/47dec32c774c3fd60deb142192fcee93_m.jpg")
+					connect.NotifyWithImageURL(result.UserToken, str, "https://www.dragonflycave.com/sprites/gen2/g/095.png", "https://www.dragonflycave.com/sprites/gen2/g/095.png")
 				}
 			}
 		}
@@ -134,4 +137,9 @@ func contains(slice []string, item string) bool {
 
 	_, ok := set[item]
 	return ok
+}
+
+func random(min, max int) int {
+	rand.Seed(time.Now().Unix())
+	return rand.Intn(max-min) + min
 }
