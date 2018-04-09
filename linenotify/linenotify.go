@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/utahta/go-linenotify/auth"
 	"github.com/utahta/go-linenotify/token"
-	"log"
 	"net/http"
 	"os"
 	"time"
