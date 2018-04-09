@@ -97,13 +97,17 @@ func NewSite(site, clientID string) bool {
 		return false
 	} else {
 		fmt.Println("FOUND!!!")
-		result.UserLocation = append(result.UserLocation, site)
-		colQuerier := bson.M{"userclientid": clientID}
-		change := bson.M{"$set": bson.M{"userlocation": result.UserLocation}}
-		err = c.Update(colQuerier, change)
-		if err != nil {
-			panic(err)
+		if contains(result.UserLocation, site) {
+			return true
+		} else {
+			result.UserLocation = append(result.UserLocation, site)
+			colQuerier := bson.M{"userclientid": clientID}
+			change := bson.M{"$set": bson.M{"userlocation": result.UserLocation}}
+			err = c.Update(colQuerier, change)
+			if err != nil {
+				panic(err)
+			}
+			return true
 		}
-		return true
 	}
 }
