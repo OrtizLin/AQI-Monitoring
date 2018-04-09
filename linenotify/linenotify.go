@@ -2,8 +2,8 @@ package linenotify
 
 import (
 	"fmt"
-	"github.com/utahta/go-linenotify"
-	"github.com/utahta/go-linenotify/auth"
+	//"github.com/utahta/go-linenotify"
+	//"github.com/utahta/go-linenotify/auth"
 	//"github.com/utahta/go-linenotify/token"
 	"net/http"
 	"os"
