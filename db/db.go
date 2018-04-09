@@ -82,7 +82,7 @@ func SaveToken(token, clientID string) bool {
 	}
 }
 
-func NewSite(site, clientID string) string {
+func NewSite(site, clientID string) bool {
 	result := User{}
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
 	if errs != nil {
@@ -92,12 +92,11 @@ func NewSite(site, clientID string) string {
 	c := session.DB("aqidb").C("userdb")
 	err := c.Find(bson.M{"userclientid": clientID}).One(&result)
 	if err != nil {
+		fmt.Println("NOT FOUND!!")
+		return false
+	} else {
 		fmt.Println("FOUND!!!")
 		fmt.Println(result)
-	} else {
-
-		fmt.Println("NOT FOUND!!!")
-		fmt.Println(result)
+		return true
 	}
-	return ""
 }
