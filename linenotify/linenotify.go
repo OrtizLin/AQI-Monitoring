@@ -14,7 +14,7 @@ func Auth(w http.ResponseWriter, req *http.Request) {
 	param1 := req.URL.Query().Get("client")
 	fmt.Fprint(w, param1)
 
-	c, err := auth.New(os.Getenv("ClientID"), os.Getenv("APP_BASE_URL")+"pushnotify")
+	c, err := auth.New(os.Getenv("ClientID"), os.Getenv("APP_BASE_URL")+"pushnotify?client="+param1)
 	if err != nil {
 		fmt.Fprintf(w, "error:%v", err)
 		return
