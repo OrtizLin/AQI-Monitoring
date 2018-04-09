@@ -154,14 +154,14 @@ func CheckRegistered(clientID string) string {
 	c := session.DB("aqidb").C("userdb")
 	err := c.Find(bson.M{"userclientid": clientID}).One(&result)
 	if err != nil {
-		return "NoUser"
+		return "nouser"
 	} else {
 		str := ""
 		for i := 0; i < len(result.UserLocation); i++ {
 			if i == len(result.UserLocation)-1 {
-				str = str + result.UserLocation[i] + " "
+				str = str + "[" + result.UserLocation[i] + "] "
 			} else {
-				str = str + result.UserLocation[i] + " , "
+				str = str + "[" + result.UserLocation[i] + "] , "
 			}
 		}
 		return str

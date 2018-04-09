@@ -70,9 +70,17 @@ func (app *LineBotStruct) handleText(message *linebot.TextMessage, replyToken st
 	switch message.Text {
 	case "查詢":
 		str := db.CheckRegistered(source.UserID)
+		replymessage := ""
+		if str == "" {
+			replymessage = "您目前尚未新增任何觀測站。"
+		} else if str == "nouser" {
+			replymessage = "您尚未使用 Line Notify，請先點擊下列網址與 Line Notify 連動\nhttps://aqi-push-notify.herokuapp.com/auth?client=" + source.UserID
+		} else {
+			replymessage = "目前加入的觀測站有 : " + str
+		}
 		if _, err := app.bot.ReplyMessage(
 			replyToken,
-			linebot.NewTextMessage("目前加入的觀測站有 : "+str),
+			linebot.NewTextMessage(replymessage),
 		).Do(); err != nil {
 			return err
 		}
