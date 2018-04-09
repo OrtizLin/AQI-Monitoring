@@ -10,10 +10,6 @@ import (
 )
 
 func main() {
-
-	//GET JSON INSERT DB
-	db.GetData()
-
 	app, err := linebot.NewLineBot(
 		os.Getenv("ChannelSecret"),
 		os.Getenv("ChannelAccessToken"),
@@ -25,6 +21,7 @@ func main() {
 	http.HandleFunc("/callback", app.Callback)
 	http.HandleFunc("/auth", linenotify.Auth)
 	http.HandleFunc("/pushnotify", linenotify.Token)
+	http.HandleFunc("/getdata", db.GetData)
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		fmt.Println(err)
 	}
