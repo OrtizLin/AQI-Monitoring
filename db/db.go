@@ -2,7 +2,9 @@ package db
 
 import (
 	"encoding/json"
+	"fmt"
 	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 	"log"
 	"net/http"
 	"os"
@@ -69,8 +71,8 @@ func SaveToken(token, clientID string) bool {
 	collect := session.DB("aqidb").C("userdb")
 	loc := []string{}
 	user := User{}
-	user.UserToken = accessToken
-	user.UserClientID = param1
+	user.UserToken = token
+	user.UserClientID = clientID
 	user.UserLocation = loc
 	errs = collect.Insert(&User{user.UserClientID, user.UserToken, user.UserLocation})
 	if errs != nil {
