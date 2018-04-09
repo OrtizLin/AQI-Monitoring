@@ -1,9 +1,9 @@
 package db
 
 import (
-	"aqiCrawler/linenotify"
 	"encoding/json"
 	"fmt"
+	"github.com/utahta/go-linenotify"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"log"
@@ -67,7 +67,9 @@ func GetData() {
 			iter := c2.Find(nil).Iter()
 			for iter.Next(&result) {
 				if contains(result.UserLocation, aqisite.StieName) {
-					linenotify.SendGoodNews(result.UserToken, aqisite.StieName)
+					connect := linenotify.New()
+					str := "今天 " + aqisite.StieName + " 附近空氣良好, 把握機會出去走走吧！"
+					connect.NotifyWithImageURL(result.UserToken, str, "https://image.famitsu.hk/201712/47dec32c774c3fd60deb142192fcee93_m.jpg", "https://image.famitsu.hk/201712/47dec32c774c3fd60deb142192fcee93_m.jpg")
 				}
 			}
 		}
