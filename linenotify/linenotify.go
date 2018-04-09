@@ -5,6 +5,8 @@ import (
 	"github.com/utahta/go-linenotify"
 	"github.com/utahta/go-linenotify/auth"
 	"github.com/utahta/go-linenotify/token"
+	"gopkg.in/mgo.v2"
+	"log"
 	"net/http"
 	"os"
 	"time"
