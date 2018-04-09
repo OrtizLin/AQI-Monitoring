@@ -67,11 +67,6 @@ func Token(w http.ResponseWriter, req *http.Request) {
 	errs = collect.Insert(&User{user.UserClientID, user.UserToken, user.UserLocation})
 	if errs != nil {
 		log.Fatal(errs)
-	} else {
-		str := "恭喜您已與空汙報報連動,ClientID :" + user.UserClientID + ", Token :" + user.UserToken
-		connect := linenotify.New()
-		connect.NotifyWithImageURL(user.UserToken, str, "https://image.famitsu.hk/201712/47dec32c774c3fd60deb142192fcee93_m.jpg", "https://image.famitsu.hk/201712/47dec32c774c3fd60deb142192fcee93_m.jpg")
 	}
-
-	fmt.Fprintf(w, "LINE Notify 連動完成。\n 您將可以不定期收到 [PTT 表特版] 爆文通知。")
+	fmt.Fprintf(w, "LINE Notify 連動完成。\n 請返回空汙報報,並註冊離你最近的觀測站。")
 }
