@@ -157,7 +157,7 @@ func CheckRegistered(clientID string) string {
 		return "NoUser"
 	} else {
 		str := ""
-		for i := 0; i < result.UserLocation.len; i++ {
+		for i := 0; i < len(result.UserLocation); i++ {
 			str = append(str, result.UserLocation[i])
 		}
 		return str
