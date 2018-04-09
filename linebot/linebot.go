@@ -72,7 +72,7 @@ func (app *LineBotStruct) handleText(message *linebot.TextMessage, replyToken st
 		str := db.CheckRegistered(source.UserID)
 		replymessage := ""
 		if str == "" {
-			replymessage = "您目前尚未新增任何觀測站。"
+			replymessage = "您目前尚未新增任何觀測站。您可以點擊快速選單裡的註冊觀測站來新增你附近的觀測站"
 		} else if str == "nouser" {
 			replymessage = "您尚未使用 Line Notify，請先點擊下列網址與 Line Notify 連動\nhttps://aqi-push-notify.herokuapp.com/auth?client=" + source.UserID
 		} else {
