@@ -93,14 +93,14 @@ func (app *LineBotStruct) handleLocation(message *linebot.LocationMessage, reply
 	lat := strconv.FormatFloat(message.Latitude, 'f', -1, 64)
 	long := strconv.FormatFloat(message.Longitude, 'f', -1, 64)
 	str := distance.GetSite(lat, long)
-
-	if _, err := app.bot.ReplyMessage(
-		replyToken,
-		linebot.NewTextMessage("已將觀測站 : ["+str+"] 加入您的資料庫, 若該地區空氣良好時將主動通知您。"),
-	).Do(); err != nil {
-		return err
+	if db.NewSite(str, source.UserID) {
+		if _, err := app.bot.ReplyMessage(
+			replyToken,
+			linebot.NewTextMessage("已將觀測站 : ["+str+"] 加入您的資料庫, 若該地區空氣良好時將主動通知您。"),
+		).Do(); err != nil {
+			return err
+		}
 	}
-	log.Print(db.NewSite(str, source.UserID))
 	return nil
 }
 
