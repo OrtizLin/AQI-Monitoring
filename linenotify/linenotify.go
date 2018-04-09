@@ -2,9 +2,9 @@ package linenotify
 
 import (
 	"fmt"
-	//"github.com/utahta/go-linenotify"
+	"github.com/utahta/go-linenotify"
 	"github.com/utahta/go-linenotify/auth"
-	//"github.com/utahta/go-linenotify/token"
+	"github.com/utahta/go-linenotify/token"
 	"net/http"
 	"os"
 	"time"
@@ -16,7 +16,7 @@ func Auth(w http.ResponseWriter, req *http.Request) {
 
 	c, err := auth.New(os.Getenv("ClientID"), os.Getenv("APP_BASE_URL")+"pushnotify")
 	if err != nil {
-		fmt.Fprintf(w, "123123")
+		fmt.Fprintf(w, "error:%v", err)
 		return
 	}
 	http.SetCookie(w, &http.Cookie{Name: "state", Value: c.State, Expires: time.Now().Add(60 * time.Second)})
@@ -25,5 +25,29 @@ func Auth(w http.ResponseWriter, req *http.Request) {
 
 func Token(w http.ResponseWriter, req *http.Request) {
 	param1 := req.URL.Query().Get("client")
-	fmt.Fprint(w, param1)
+	// fmt.Fprint(w, param1)
+
+	resp, err := auth.ParseRequest(req)
+	if err != nil {
+		fmt.Fprintf(w, "error:%v", err)
+		return
+	}
+
+	state, err := req.Cookie("state")
+	if err != nil {
+		fmt.Fprintf(w, "error:%v", err)
+		return
+	}
+	if resp.State != state.Value {
+		fmt.Fprintf(w, "error:%v", err)
+		return
+	}
+
+	c := token.New(os.Getenv("APP_BASE_URL")+"pushnotify", os.Getenv("ClientID"), os.Getenv("ClientSecret"))
+	accessToken, err := c.GetAccessToken(resp.Code)
+	if err != nil {
+		fmt.Fprintf(w, "error:%v", err)
+		return
+	}
+	fmt.Println(accessToken, param1)
 }
