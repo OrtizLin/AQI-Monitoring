@@ -15,7 +15,7 @@ import (
 type User struct {
 	UserClientID string
 	UserToken    string
-	UserLocation string
+	UserLocation []string
 }
 
 var param1 = ""
@@ -60,13 +60,14 @@ func Token(w http.ResponseWriter, req *http.Request) {
 	}
 	defer session.Close()
 	collect := session.DB("aqidb").C("userdb")
+	loc := []string{}
 	user := User{}
 	user.UserToken = accessToken
 	user.UserClientID = param1
-	user.UserLocation = ""
+	user.UserLocation = loc
 	errs = collect.Insert(&User{user.UserClientID, user.UserToken, user.UserLocation})
 	if errs != nil {
 		log.Fatal(errs)
 	}
-	fmt.Fprintf(w, "LINE Notify 連動完成。\n 請返回空汙報報,並註冊離你最近的觀測站")
+	fmt.Fprintf(w, "LINE Notify 連動完成。\n 請返回空汙報報, 並註冊離你最近的觀測站。")
 }
