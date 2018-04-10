@@ -1,6 +1,7 @@
 package distance
 
 import (
+	"fmt"
 	"gopkg.in/mgo.v2"
 	"math"
 	"os"
@@ -45,6 +46,8 @@ func GetSite(lat, lon string) string {
 			dis = rangeOfTwoPoint
 			site = result.SiteName
 		}
+		fmt.Println(dis)
+		fmt.Println(result.SiteName)
 	}
 	return site
 }
