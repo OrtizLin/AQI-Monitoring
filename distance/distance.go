@@ -8,7 +8,7 @@ import (
 )
 
 type AqiSite struct {
-	StieName   string
+	SiteName   string
 	AQI        string
 	Status     string
 	Latitude   string
@@ -43,7 +43,7 @@ func GetSite(lat, lon string) string {
 		rangeOfTwoPoint := distance(lat1, lon1, lat2, lon2)
 		if rangeOfTwoPoint < dis {
 			dis = rangeOfTwoPoint
-			site = result.StieName
+			site = result.SiteName
 		}
 	}
 	return site
