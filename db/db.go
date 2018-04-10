@@ -15,12 +15,13 @@ import (
 )
 
 type AqiSite struct {
-	StieName   string
-	AQI        string
-	Status     string
-	Latitude   string
-	Longitude  string
-	UpdateTime string
+	StieName    string
+	AQI         string
+	Status      string
+	Latitude    string
+	Longitude   string
+	UpdateTime  string
+	AlreadySent bool
 }
 
 type User struct {
@@ -38,6 +39,14 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 	defer session.Close()
 	c := session.DB("aqidb").C("aqisite")
 	c2 := session.DB("aqidb").C("userdb")
+
+	//check if 8 am or 6 pm data has been sent.
+	result := AqiSite{}
+	err := c.Find(bson.M{"alreadysent": false}).One(&result)
+	if err != nil {
+		log.Fatal(errs)
+	}
+
 	//Clean DB
 	c.RemoveAll(nil)
 	//Get AQI data from opendate2
@@ -59,37 +68,42 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 		aqisite.Latitude = md["Latitude"].(string)
 		aqisite.Longitude = md["Longitude"].(string)
 		aqisite.UpdateTime = md["PublishTime"].(string)
-		//Insert to DB
-		errs = c.Insert(&AqiSite{aqisite.StieName, aqisite.AQI, aqisite.Status, aqisite.Latitude, aqisite.Longitude, aqisite.UpdateTime})
-		if errs != nil {
-			log.Fatal(errs)
-		}
+		aqisite.AlreadySent = false
 
 		time := aqisite.UpdateTime[len(aqisite.UpdateTime)-5:]
-		//Only notify at 8 am and 6 pm
-		if time == "08:00" || time == "18:00" {
-			//Check status and send notify to whom live in this area.
-			if aqisite.Status == "良好" {
-				result := User{}
-				iter := c2.Find(nil).Iter()
-				for iter.Next(&result) {
-					if contains(result.UserLocation, aqisite.StieName) {
-						connect := linenotify.New()
-						//Random pokémon pic
-						myrand := random(1, 251)
-						url := ""
-						if myrand < 10 {
-							url = "https://www.dragonflycave.com/sprites/gen2/g/00" + strconv.Itoa(myrand) + ".png"
-						} else if myrand >= 10 && myrand < 100 {
-							url = "https://www.dragonflycave.com/sprites/gen2/g/0" + strconv.Itoa(myrand) + ".png"
-						} else {
-							url = "https://www.dragonflycave.com/sprites/gen2/g/" + strconv.Itoa(myrand) + ".png"
+		//avoid duplicate message send.
+		if result.AlreadySent != true {
+			//Only notify at 8 am and 6 pm
+			if time == "12:00" || time == "18:00" {
+				//Check status and send notify to whom live in this area.
+				if aqisite.Status == "良好" {
+					result := User{}
+					iter := c2.Find(nil).Iter()
+					for iter.Next(&result) {
+						if contains(result.UserLocation, aqisite.StieName) {
+							connect := linenotify.New()
+							//Random pokémon pic
+							myrand := random(1, 251)
+							url := ""
+							if myrand < 10 {
+								url = "https://www.dragonflycave.com/sprites/gen2/g/00" + strconv.Itoa(myrand) + ".png"
+							} else if myrand >= 10 && myrand < 100 {
+								url = "https://www.dragonflycave.com/sprites/gen2/g/0" + strconv.Itoa(myrand) + ".png"
+							} else {
+								url = "https://www.dragonflycave.com/sprites/gen2/g/" + strconv.Itoa(myrand) + ".png"
+							}
+							str := "今天 [" + aqisite.StieName + "] 附近空氣良好, 把握機會出去走走吧！"
+							connect.NotifyWithImageURL(result.UserToken, str, url, url)
 						}
-						str := "今天 [" + aqisite.StieName + "] 附近空氣良好, 把握機會出去走走吧！"
-						connect.NotifyWithImageURL(result.UserToken, str, url, url)
 					}
 				}
+				aqisite.AlreadySent = true
 			}
+		}
+		//Insert to DB
+		errs = c.Insert(&AqiSite{aqisite.StieName, aqisite.AQI, aqisite.Status, aqisite.Latitude, aqisite.Longitude, aqisite.UpdateTime, aqisite.AlreadySent})
+		if errs != nil {
+			log.Fatal(errs)
 		}
 	}
 }
