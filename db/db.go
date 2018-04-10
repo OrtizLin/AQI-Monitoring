@@ -64,7 +64,6 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 	if result.UpdateTime == timeTesting {
 		alreadySent = true
 	}
-	fmt.Println(alreadySent)
 	//Clean DB
 	c.RemoveAll(nil)
 
@@ -82,29 +81,30 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 		if errs != nil {
 			log.Fatal(errs)
 		}
-
-		time := aqisite.UpdateTime[len(aqisite.UpdateTime)-5:]
-		//Only notify at 8 am and 6 pm
-		if time == "08:00" || time == "18:00" {
-			//Check status and send notify to whom live in this area.
-			if aqisite.Status == "良好" {
-				result := User{}
-				iter := c2.Find(nil).Iter()
-				for iter.Next(&result) {
-					if contains(result.UserLocation, aqisite.SiteName) {
-						connect := linenotify.New()
-						//Random pokémon pic
-						myrand := random(1, 251)
-						url := ""
-						if myrand < 10 {
-							url = "https://www.dragonflycave.com/sprites/gen2/g/00" + strconv.Itoa(myrand) + ".png"
-						} else if myrand >= 10 && myrand < 100 {
-							url = "https://www.dragonflycave.com/sprites/gen2/g/0" + strconv.Itoa(myrand) + ".png"
-						} else {
-							url = "https://www.dragonflycave.com/sprites/gen2/g/" + strconv.Itoa(myrand) + ".png"
+		if alreadySent == false {
+			time := aqisite.UpdateTime[len(aqisite.UpdateTime)-5:]
+			//Only notify at 8 am and 6 pm
+			if time == "12:00" || time == "18:00" {
+				//Check status and send notify to whom live in this area.
+				if aqisite.Status == "良好" {
+					result := User{}
+					iter := c2.Find(nil).Iter()
+					for iter.Next(&result) {
+						if contains(result.UserLocation, aqisite.SiteName) {
+							connect := linenotify.New()
+							//Random pokémon pic
+							myrand := random(1, 251)
+							url := ""
+							if myrand < 10 {
+								url = "https://www.dragonflycave.com/sprites/gen2/g/00" + strconv.Itoa(myrand) + ".png"
+							} else if myrand >= 10 && myrand < 100 {
+								url = "https://www.dragonflycave.com/sprites/gen2/g/0" + strconv.Itoa(myrand) + ".png"
+							} else {
+								url = "https://www.dragonflycave.com/sprites/gen2/g/" + strconv.Itoa(myrand) + ".png"
+							}
+							str := "今天 [" + aqisite.SiteName + "] 附近空氣良好, 把握機會出去走走吧！"
+							connect.NotifyWithImageURL(result.UserToken, str, url, url)
 						}
-						str := "今天 [" + aqisite.SiteName + "] 附近空氣良好, 把握機會出去走走吧！"
-						connect.NotifyWithImageURL(result.UserToken, str, url, url)
 					}
 				}
 			}
