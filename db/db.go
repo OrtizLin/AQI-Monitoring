@@ -15,7 +15,7 @@ import (
 )
 
 type AqiSite struct {
-	StieName   string
+	SiteName   string
 	AQI        string
 	Status     string
 	Latitude   string
@@ -53,14 +53,14 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 	for i := 0; i < len(generic); i++ {
 		aqisite := AqiSite{}
 		md := generic[i].(map[string]interface{})
-		aqisite.StieName = md["SiteName"].(string)
+		aqisite.SiteName = md["SiteName"].(string)
 		aqisite.AQI = md["AQI"].(string)
 		aqisite.Status = md["Status"].(string)
 		aqisite.Latitude = md["Latitude"].(string)
 		aqisite.Longitude = md["Longitude"].(string)
 		aqisite.UpdateTime = md["PublishTime"].(string)
 		//Insert to DB
-		errs = c.Insert(&AqiSite{aqisite.StieName, aqisite.AQI, aqisite.Status, aqisite.Latitude, aqisite.Longitude, aqisite.UpdateTime})
+		errs = c.Insert(&AqiSite{aqisite.SiteName, aqisite.AQI, aqisite.Status, aqisite.Latitude, aqisite.Longitude, aqisite.UpdateTime})
 		if errs != nil {
 			log.Fatal(errs)
 		}
@@ -73,7 +73,7 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 				result := User{}
 				iter := c2.Find(nil).Iter()
 				for iter.Next(&result) {
-					if contains(result.UserLocation, aqisite.StieName) {
+					if contains(result.UserLocation, aqisite.SiteName) {
 						connect := linenotify.New()
 						//Random pokémon pic
 						myrand := random(1, 251)
@@ -85,7 +85,7 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 						} else {
 							url = "https://www.dragonflycave.com/sprites/gen2/g/" + strconv.Itoa(myrand) + ".png"
 						}
-						str := "今天 [" + aqisite.StieName + "] 附近空氣良好, 把握機會出去走走吧！"
+						str := "今天 [" + aqisite.SiteName + "] 附近空氣良好, 把握機會出去走走吧！"
 						connect.NotifyWithImageURL(result.UserToken, str, url, url)
 					}
 				}
