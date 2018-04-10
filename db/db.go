@@ -30,6 +30,9 @@ type User struct {
 }
 
 func GetData(w http.ResponseWriter, req *http.Request) {
+
+	var alreadySent = false
+
 	//Connect DB
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
 	if errs != nil {
@@ -38,8 +41,7 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 	defer session.Close()
 	c := session.DB("aqidb").C("aqisite")
 	c2 := session.DB("aqidb").C("userdb")
-	//Clean DB
-	c.RemoveAll(nil)
+
 	//Get AQI data from opendate2
 	resp, err := http.Get("http://opendata2.epa.gov.tw/AQI.json")
 	if err != nil {
@@ -50,6 +52,22 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	//check if data already sent to user.
+	mdTesting := generic[0].(map[string]interface{})
+	timeTesting := mdTesting["PublishTime"].(string)
+
+	result := AqiSite{}
+	err = c.Find(bson.M{"sitename": "美濃"}).One(&result)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if result.UpdateTime == timeTesting {
+		alreadySent = true
+	}
+	fmt.Println(alreadySent)
+	//Clean DB
+	c.RemoveAll(nil)
+
 	for i := 0; i < len(generic); i++ {
 		aqisite := AqiSite{}
 		md := generic[i].(map[string]interface{})
