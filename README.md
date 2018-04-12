@@ -23,3 +23,45 @@ Now , when your observatory shows AQI is under 51 (which means air quality is go
 (P.S. Notify only push  between 8 am and 9 am , 6 pm and 7 pm)
 
 ![螢幕快照 2018-04-12 下午4.04.38](https://i.imgur.com/Whm9bZG.png)
+
+# Others
+
+#### Calculate distance of two location
+
+```
+func distance(lat1, lon1, lat2, lon2 float64) float64 {
+	// convert to radians
+	// must cast radius as float to multiply later
+	var la1, lo1, la2, lo2, r float64
+	la1 = lat1 * math.Pi / 180
+	lo1 = lon1 * math.Pi / 180
+	la2 = lat2 * math.Pi / 180
+	lo2 = lon2 * math.Pi / 180
+
+	r = 6378100 // Earth radius in METERS
+
+	// calculate
+	h := hsin(la2-la1) + math.Cos(la1)*math.Cos(la2)*hsin(lo2-lo1)
+
+	return 2 * r * math.Asin(math.Sqrt(h))
+}
+```
+
+```
+func hsin(theta float64) float64 {
+	return math.Pow(math.Sin(theta/2), 2)
+}
+```
+
+#### Line Message API plan
+
+![螢幕快照 2018-04-12 下午4.04.38](https://i.imgur.com/ay8pUgZ.png)
+
+Although the free plan cant't push message , this plan can get unlimited number of friends.
+
+#### Line Notify API
+
+Then, use Line Notify API to implement AQI notify function.
+
+![螢幕快照 2018-04-12 下午4.04.38](https://i.imgur.com/pucTx8a.png)
+
