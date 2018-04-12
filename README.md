@@ -20,6 +20,6 @@ Of course , you can register observatory as much as you want (your home, workpla
 
 Now , when your observatory shows AQI is under 51 (which means air quality is good in this area) , you will get notify and a adorable Pokémon pic randomly.
 
-(P.S. Notify only push at 8 am~9 am , 6pm~7pm)
+(P.S. Notify only push  between 8 am and 9 am , 6 pm and 7 pm)
 
 ![螢幕快照 2018-04-12 下午4.04.38](https://i.imgur.com/Whm9bZG.png)
