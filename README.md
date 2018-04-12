@@ -10,7 +10,7 @@ First of all , Add this [LINE robot](https://line.me/R/ti/p/%40zhm1865k) as frie
 
 After that , you can register observatory nearby .
 
-Send your location to server and we will find out which observatory is closest.
+Send your location to server and we will find out which observatory is nearest.
 
 ![螢幕快照 2018-04-12 下午4.04.38](https://i.imgur.com/q7Jq9WK.png)
 
