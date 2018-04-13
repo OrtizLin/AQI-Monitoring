@@ -63,6 +63,6 @@ func Token(w http.ResponseWriter, req *http.Request) {
 func SomeOneFollow(displayname, url string) {
 	token := os.Getenv("OtisToken")
 	c := linenotify.New()
-	content := displayname + "追蹤了表特爆報 ！"
+	content := displayname + "追蹤了空汙報報 ！"
 	c.NotifyWithImageURL(token, content, url, url)
 }
