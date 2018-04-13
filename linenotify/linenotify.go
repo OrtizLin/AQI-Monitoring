@@ -3,6 +3,7 @@ package linenotify
 import (
 	"aqiCrawler/db"
 	"fmt"
+	"github.com/utahta/go-linenotify"
 	"github.com/utahta/go-linenotify/auth"
 	"github.com/utahta/go-linenotify/token"
 	"net/http"
@@ -57,4 +58,11 @@ func Token(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "LINE Notify 連動完成。\n 請返回空汙報報, 並註冊離你最近的觀測站。")
 	}
 
+}
+
+func SomeOneFollow(displayname, url string) {
+	token := os.Getenv("OtisToken")
+	c := linenotify.New()
+	content := displayname + "追蹤了表特爆報 ！"
+	c.NotifyWithImageURL(token, content, url, url)
 }

@@ -3,6 +3,7 @@ package linebot
 import (
 	"aqiCrawler/db"
 	"aqiCrawler/distance"
+	"aqiCrawler/linenotify"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
 	"net/http"
@@ -126,6 +127,10 @@ func (app *LineBotStruct) handleFollow(replyToken string, source *linebot.EventS
 	if err != nil {
 		log.Print(err)
 	}
+	//send notify to me when someone follow this robot.
+	linenotify.SomeOneFollow(profile.DisplayName, profile.PictureURL)
+
+	//reply message.
 	if _, err := app.bot.ReplyMessage(
 		replyToken,
 		linebot.NewTextMessage(profile.DisplayName+" 歡迎使用 空汙報報 。\n請按步驟啟用 LINE Notify\n已獲得最新文章通知。\n1. 開啟下方網址\n2. 選擇“群組”第一個「透過1對1聊天」接收 Line Notify 的通知。\n3. 點擊「同意並連動」。\nhttps://aqi-push-notify.herokuapp.com/auth?client="+profile.UserID),
