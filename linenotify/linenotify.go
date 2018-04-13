@@ -26,6 +26,9 @@ func Auth(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "error:%v", err)
 		return
 	}
+	fmt.Println("AAAA")
+	fmt.Println(c.State)
+	fmt.Println("BBBB")
 	http.SetCookie(w, &http.Cookie{Name: "state", Value: c.State, Expires: time.Now().Add(60 * time.Second)})
 	c.Redirect(w, req)
 }
