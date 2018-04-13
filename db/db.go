@@ -57,7 +57,7 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 	timeTesting := mdTesting["PublishTime"].(string)
 
 	result := AqiSite{}
-	err = c.Find(bson.M{"sitename": "美濃"}).One(&result)
+	err = c.Find(bson.M{"sitename": "基隆"}).One(&result)
 	if err != nil {
 		log.Fatal(err)
 	}
