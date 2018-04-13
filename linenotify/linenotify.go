@@ -17,10 +17,8 @@ type User struct {
 	UserLocation []string
 }
 
-var param1 = ""
-
 func Auth(w http.ResponseWriter, req *http.Request) {
-	param1 = req.URL.Query().Get("client")
+	param1 := req.URL.Query().Get("client")
 	c, err := auth.New(os.Getenv("ClientID"), os.Getenv("APP_BASE_URL")+"pushnotify")
 	if err != nil {
 		fmt.Fprintf(w, "error:%v", err)
@@ -42,14 +40,6 @@ func Token(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "error:%v", err)
 		return
 	}
-	// if resp.State != state.Value {
-	// 	fmt.Fprintf(w, "error:%v", err)
-	// 	return
-	// }
-
-	fmt.Println("AAA")
-	fmt.Println(state.Value)
-	fmt.Println("BBB")
 	c := token.New(os.Getenv("APP_BASE_URL")+"pushnotify", os.Getenv("ClientID"), os.Getenv("ClientSecret"))
 	accessToken, err := c.GetAccessToken(resp.Code)
 	if err != nil {
@@ -57,7 +47,7 @@ func Token(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if db.SaveToken(accessToken, param1) {
+	if db.SaveToken(accessToken, state.Value) {
 		fmt.Fprintf(w, "LINE Notify 連動完成。\n 請返回空汙報報, 並註冊離你最近的觀測站。")
 	}
 
