@@ -84,7 +84,7 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 		if alreadySent == false {
 			time := aqisite.UpdateTime[len(aqisite.UpdateTime)-5:]
 			//Only notify at 8 am and 6 pm
-			if time == "08:00" || time == "18:00" {
+			if time == "09:00" || time == "19:00" {
 				//Check status and send notify to whom live in this area.
 				if aqisite.Status == "良好" {
 					result := User{}
