@@ -31,6 +31,7 @@ type User struct {
 
 func GetData(w http.ResponseWriter, req *http.Request) {
 
+	log.Println("GET DATA CALL")
 	var alreadySent = false
 
 	//Connect DB
@@ -44,6 +45,8 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 
 	//Get AQI data from opendate2
 	resp, err := http.Get("http://opendata2.epa.gov.tw/AQI.json")
+
+	log.Println("GET DATA FROM GOV")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -52,6 +55,8 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	log.Println("GET DATA WITHOUT ERROR")
 	//check if data already sent to user.
 	mdTesting := generic[0].(map[string]interface{})
 	timeTesting := mdTesting["PublishTime"].(string)
