@@ -31,7 +31,6 @@ type User struct {
 
 func GetData(w http.ResponseWriter, req *http.Request) {
 
-	log.Println("GET DATA CALL")
 	var alreadySent = false
 
 	//Connect DB
@@ -45,8 +44,6 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 
 	//Get AQI data from opendate2
 	resp, err := http.Get("http://opendata2.epa.gov.tw/AQI.json")
-
-	log.Println("GET DATA FROM GOV")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -56,7 +53,6 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 		log.Fatal(err)
 	}
 
-	log.Println("GET DATA WITHOUT ERROR")
 	//check if data already sent to user.
 	mdTesting := generic[0].(map[string]interface{})
 	timeTesting := mdTesting["PublishTime"].(string)
@@ -64,14 +60,13 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 	result := AqiSite{}
 	err = c.Find(bson.M{"status": "普通"}).One(&result)
 	if err != nil {
-		log.Println("error comes here")
+		log.Println("can not found")
 	}
 	if result.UpdateTime == timeTesting {
 		alreadySent = true
 	}
 	//Clean DB
 	c.RemoveAll(nil)
-	log.Println("clean DB successful")
 
 	for i := 0; i < len(generic); i++ {
 		aqisite := AqiSite{}
@@ -90,7 +85,7 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 		if alreadySent == false {
 			time := aqisite.UpdateTime[len(aqisite.UpdateTime)-5:]
 			//Only notify at 8 am and 6 pm
-			if time == "09:00" || time == "19:00" {
+			if time == "08:00" || time == "18:00" {
 				//Check status and send notify to whom live in this area.
 				if aqisite.Status == "良好" {
 
