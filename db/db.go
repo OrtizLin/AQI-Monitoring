@@ -64,6 +64,7 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 	result := AqiSite{}
 	err = c.Find(bson.M{"status": "普通"}).One(&result)
 	if err != nil {
+		log.Println("error comes here")
 		log.Fatal(err)
 	}
 	if result.UpdateTime == timeTesting {
