@@ -60,7 +60,8 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 	//check if data already sent to user.
 	mdTesting := generic[0].(map[string]interface{})
 	timeTesting := mdTesting["PublishTime"].(string)
-
+	log.Println(mdTesting + "First string")
+	log.Println(timeTesting + "Second string")
 	result := AqiSite{}
 	err = c.Find(bson.M{"status": "普通"}).One(&result)
 	if err != nil {
