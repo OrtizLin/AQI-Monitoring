@@ -71,6 +71,7 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 	}
 	//Clean DB
 	c.RemoveAll(nil)
+	log.Println("clean DB successful")
 
 	for i := 0; i < len(generic); i++ {
 		aqisite := AqiSite{}
@@ -92,6 +93,8 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 			if time == "09:00" || time == "19:00" {
 				//Check status and send notify to whom live in this area.
 				if aqisite.Status == "良好" {
+
+					log.Println(aqisite.SiteName + "顯示為良好")
 					result := User{}
 					iter := c2.Find(nil).Iter()
 					for iter.Next(&result) {
