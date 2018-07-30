@@ -107,6 +107,7 @@ func GetData(w http.ResponseWriter, req *http.Request) {
 							}
 							str := "今天 [" + aqisite.SiteName + "] 附近空氣良好, 把握機會出去走走吧！"
 							connect.NotifyWithImageURL(result.UserToken, str, url, url)
+
 						}
 					}
 				}
