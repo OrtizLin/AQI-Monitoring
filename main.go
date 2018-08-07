@@ -1,9 +1,7 @@
 package main
 
 import (
-	"aqiCrawler/db"
 	"aqiCrawler/linebot"
-	"aqiCrawler/linenotify"
 	"fmt"
 	"net/http"
 	"os"
