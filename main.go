@@ -18,10 +18,10 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	http.HandleFunc("/test_callback", app.Callback)
-	http.HandleFunc("/test_auth", linenotify.Auth)
-	http.HandleFunc("/test_pushnotify", linenotify.Token)
-	http.HandleFunc("/test_getdata", db.GetData)
+	http.HandleFunc("/remove_callback", app.Callback)
+	http.HandleFunc("/remove_auth", linenotify.Auth)
+	http.HandleFunc("/remove_pushnotify", linenotify.Token)
+	http.HandleFunc("/remove_getdata", db.GetData)
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		fmt.Println(err)
 	}
