@@ -184,6 +184,7 @@ func CheckRegistered(clientID string) string {
 				str = str + "[" + result.UserLocation[i] + "] "
 			} else {
 				str = str + "[" + result.UserLocation[i] + "] , "
+
 			}
 
 		}
